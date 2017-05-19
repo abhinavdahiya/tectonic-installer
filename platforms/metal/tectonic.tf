@@ -9,8 +9,9 @@ module "bootkube" {
   oidc_issuer_url = "https://${var.tectonic_metal_ingress_domain}/identity"
 
   # platform-independent defaults
-  container_images = "${var.tectonic_container_images}"
-  versions         = "${var.tectonic_versions}"
+  container_images      = "${var.tectonic_container_images}"
+  versions              = "${var.tectonic_versions}"
+  calico_network_policy = "${var.tectonic_calico_network_policy}"
 
   ca_cert    = "${var.tectonic_ca_cert}"
   ca_key     = "${var.tectonic_ca_key}"

@@ -49,8 +49,6 @@ resource "template_dir" "bootkube" {
     kubedns_image          = "${var.container_images["kubedns"]}"
     kubednsmasq_image      = "${var.container_images["kubednsmasq"]}"
     kubedns_sidecar_image  = "${var.container_images["kubedns_sidecar"]}"
-    flannel_image          = "${var.container_images["flannel"]}"
-    flannel_cni_image      = "${var.container_images["flannel_cni"]}"
 
     # Choose the etcd endpoints to use.
     # 1. If experimental mode is enabled (self-hosted etcd), then use
@@ -217,4 +215,27 @@ resource "local_file" "etcd_peer_key" {
   count    = "${var.experimental_enabled || var.etcd_tls_enabled ? 1 : 0}"
   content  = "${join("", tls_private_key.etcd_peer.*.private_key_pem)}"
   filename = "./generated/tls/peer/etcd-peer.key"
+}
+
+module "flannel" {
+  source = "./net/flannel"
+
+  flannel_image     = "${var.container_images["flannel"]}"
+  flannel_cni_image = "${var.container_images["flannel_cni"]}"
+  cluster_cidr      = "${var.cluster_cidr}"
+  enabled           = "${var.flannel_networking}"
+
+  bootkube_dir = "${template_dir.bootkube.id}"
+}
+
+module "calico-network-policy" {
+  source = "./net/calico-network-policy"
+
+  kube_apiserver_url = "${var.kube_apiserver_url}"
+  calico_image       = "${var.container_images["calico"]}"
+  calico_cni_image   = "${var.container_images["calico_cni"]}"
+  cluster_cidr       = "${var.cluster_cidr}"
+  enabled            = "${var.calico_network_policy}"
+
+  bootkube_dir = "${template_dir.bootkube.id}"
 }

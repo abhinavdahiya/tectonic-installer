@@ -9,8 +9,9 @@ module "bootkube" {
   oidc_issuer_url = "https://${var.tectonic_vmware_ingress_domain}/identity"
 
   # Platform-independent variables wiring, do not modify.
-  container_images = "${var.tectonic_container_images}"
-  versions         = "${var.tectonic_versions}"
+  container_images      = "${var.tectonic_container_images}"
+  versions              = "${var.tectonic_versions}"
+  calico_network_policy = "${var.tectonic_calico_network_policy}"
 
   ca_cert    = "${var.tectonic_ca_cert}"
   ca_key     = "${var.tectonic_ca_key}"
@@ -87,5 +88,5 @@ data "archive_file" "assets" {
   # Additionally, data sources do not support managing any lifecycle whatsoever,
   # and therefore, the archive is never deleted. To avoid cluttering the module
   # folder, we write it in the TerraForm managed hidden folder `.terraform`.
-  output_path = "${path.cwd}/.terraform/generated_${sha1("${module.tectonic.id} ${module.bootkube.id}")}.zip"
+  output_path = "./.terraform/generated_${sha1("${module.tectonic.id} ${module.bootkube.id})}.zip"
 }

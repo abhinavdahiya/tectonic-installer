@@ -71,6 +71,7 @@ module "masters" {
   cloud_provider               = ""
   kubelet_node_label           = "node-role.kubernetes.io/master"
   kubelet_node_taints          = "node-role.kubernetes.io/master=:NoSchedule"
+  kubelet_cni_bin_dir          = "${var.tectonic_calico_network_policy ? "/var/lib/cni/bin" : "" }"
   bootkube_service             = "${module.bootkube.systemd_service}"
   tectonic_service             = "${module.tectonic.systemd_service}"
   tectonic_service_disabled    = "${var.tectonic_vanilla_k8s}"
@@ -99,6 +100,7 @@ module "workers" {
   tectonic_kube_dns_service_ip = "${module.bootkube.kube_dns_service_ip}"
   cloud_provider               = ""
   kubelet_node_label           = "node-role.kubernetes.io/node"
+  kubelet_cni_bin_dir          = "${var.tectonic_calico_network_policy ? "/var/lib/cni/bin" : "" }"
 }
 
 module "dns" {

@@ -30,6 +30,8 @@ output "id" {
     template_dir.bootstrap-experimental.*.id,
     template_dir.etcd-experimental.*.id,
     )}
+  ${module.flannel.id}
+  ${module.calico-network-policy.id}
   ")}"
 }
 

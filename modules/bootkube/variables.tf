@@ -107,3 +107,13 @@ variable "master_count" {
   description = "The number of the master nodes"
   type        = "string"
 }
+
+variable "flannel_networking" {
+  description = "Deploys flannel networking"
+  default     = true
+}
+
+variable "calico_network_policy" {
+  description = "Deploy network policy support using Calico"
+  default     = false
+}

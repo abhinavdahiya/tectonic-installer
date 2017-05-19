@@ -135,6 +135,22 @@ pipeline {
               }
             }
           },
+          "SmokeTest TerraForm: AWS (experimental network policy)": {
+            node('worker && ec2') {
+              withCredentials(creds) {
+                withDockerContainer(builder_image) {
+                  checkout scm
+                  unstash 'installer'
+                  timeout(5) {
+                    sh """#!/bin/bash -ex
+                    . ${WORKSPACE}/tests/smoke/aws/smoke.sh assume-role "$TECTONIC_INSTALLER_ROLE"
+                    ${WORKSPACE}/tests/smoke/aws/smoke.sh plan vars/aws-exp-np.tfvars
+                    """
+                  }
+                }
+              }
+            }
+          },
           "SmokeTest TerraForm: AWS (custom ca)": {
             node('worker && ec2') {
               withCredentials(creds) {
@@ -201,7 +217,7 @@ pipeline {
                 }
               }
             }
-          }
+          },
         )
       }
       post {

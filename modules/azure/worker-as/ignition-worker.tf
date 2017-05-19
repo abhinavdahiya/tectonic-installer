@@ -40,6 +40,7 @@ data "template_file" "kubelet-worker" {
     node_label     = "${var.kubelet_node_label}"
     cloud_provider = "${var.cloud_provider}"
     cluster_dns    = "${var.tectonic_kube_dns_service_ip}"
+    cni_bin_dir    = "${var.kubelet_cni_bin_dir != "" ? "--cni-bin-dir=${var.kubelet_cni_bin_dir}" : ""}"
   }
 }
 

@@ -6,8 +6,9 @@ module "bootkube" {
   oidc_issuer_url    = "https://${var.tectonic_cluster_name}.${var.tectonic_base_domain}/identity"
 
   # Platform-independent variables wiring, do not modify.
-  container_images = "${var.tectonic_container_images}"
-  versions         = "${var.tectonic_versions}"
+  container_images      = "${var.tectonic_container_images}"
+  versions              = "${var.tectonic_versions}"
+  calico_network_policy = "${var.tectonic_calico_network_policy}"
 
   ca_cert    = "${var.tectonic_ca_cert}"
   ca_key     = "${var.tectonic_ca_key}"
@@ -133,6 +134,7 @@ EOF
   hostname_infix               = "master"
   node_labels                  = "node-role.kubernetes.io/master"
   node_taints                  = "node-role.kubernetes.io/master=:NoSchedule"
+  kubelet_cni_bin_dir          = "${var.tectonic_calico_network_policy ? "/var/lib/cni/bin" : "" }"
 }
 
 module "worker_nodes" {
@@ -156,6 +158,7 @@ EOF
   hostname_infix               = "worker"
   node_labels                  = "node-role.kubernetes.io/node"
   node_taints                  = ""
+  kubelet_cni_bin_dir          = "${var.tectonic_calico_network_policy ? "/var/lib/cni/bin" : "" }"
 }
 
 module "secrets" {

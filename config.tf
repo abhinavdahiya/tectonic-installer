@@ -48,6 +48,8 @@ variable "tectonic_container_images" {
     etcd                            = "quay.io/coreos/etcd:v3.1.8"
     etcd_operator                   = "quay.io/coreos/etcd-operator:v0.3.3"
     kenc                            = "quay.io/coreos/kenc:8f6e2e885f790030fbbb0496ea2a2d8830e58b8f"
+    calico                          = "quay.io/calico/node:v1.3.0"
+    calico_cni                      = "quay.io/calico/cni:v1.9.1-4-g23fcd5f"
     awscli                          = "quay.io/coreos/awscli:025a357f05242fdad6a81e8a6b520098aa65a600"
     kube_version                    = "quay.io/coreos/kube-version:0.1.0"
     tectonic_etcd_operator          = "quay.io/coreos/tectonic-etcd-operator:v0.0.1"
@@ -320,4 +322,9 @@ variable "tectonic_stats_url" {
   type        = "string"
   default     = "https://stats-collector.tectonic.com"
   description = "The Tectonic statistics collection URL to which to report."
+}
+
+variable "tectonic_calico_network_policy" {
+  description = "[ALPHA] If set to true, calico network policy support will be deployed"
+  default     = false
 }
