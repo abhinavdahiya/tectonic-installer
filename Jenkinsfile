@@ -109,9 +109,26 @@ pipeline {
                                passwordVariable: 'AWS_SECRET_ACCESS_KEY'
                              ]
                              ]) {
-            unstash 'installer'
-            unstash 'sanity'
-            sh 'ONLY_PLAN=true ${WORKSPACE}/test/scripts/aws.sh aws-exp.tfvars'
+              unstash 'installer'
+              unstash 'sanity'
+              sh 'ONLY_PLAN=true ${WORKSPACE}/test/scripts/aws.sh aws-exp.tfvars'
+            }
+          },
+          "TerraForm: AWS-experimental-network-policy": {
+            withCredentials([file(credentialsId: 'tectonic-pull', variable: 'TF_VAR_tectonic_pull_secret_path'),
+                             file(credentialsId: 'tectonic-license', variable: 'TF_VAR_tectonic_license_path'),
+                             [
+                               $class: 'UsernamePasswordMultiBinding',
+                               credentialsId: 'tectonic-aws',
+                               usernameVariable: 'AWS_ACCESS_KEY_ID',
+                               passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                             ]
+                             ]) {
+              unstash 'installer'
+              unstash 'sanity'
+              timeout(30) {
+                sh '${WORKSPACE}/test/scripts/aws.sh aws-exp-np.tfvars'
+              }
             }
           }
         )

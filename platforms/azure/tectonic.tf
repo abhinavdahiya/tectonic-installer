@@ -62,8 +62,28 @@ module "tectonic" {
   master_count      = "${var.tectonic_master_count}"
 }
 
+module "flannel" {
+  source = "../../modules/net/flannel"
+
+  container_images = "${var.tectonic_container_images}"
+  cluster_cidr     = "${var.tectonic_cluster_cidr}"
+
+  bootkube_id = "${module.bootkube.id}"
+}
+
+module "calico-network-policy" {
+  source = "../../modules/net/calico-network-policy"
+
+  kube_apiserver_url = "https://${module.masters.api_internal_fqdn}:443"
+  container_images   = "${var.tectonic_container_images}"
+  cluster_cidr       = "${var.tectonic_cluster_cidr}"
+  enabled            = "${var.tectonic_enable_calico_network_policy}"
+
+  bootkube_id = "${module.bootkube.id}"
+}
+
 resource "null_resource" "tectonic" {
-  depends_on = ["module.tectonic", "module.masters"]
+  depends_on = ["module.tectonic", "module.masters", "module.flannel", "module.calico-network-policy"]
 
   triggers {
     api-endpoint = "${module.masters.api_external_fqdn}"

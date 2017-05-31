@@ -33,13 +33,26 @@ data "ignition_systemd_unit" "locksmithd" {
   mask = true
 }
 
+data "null_data_source" "kubelet-cni-binaries" {
+  inputs = {
+    cni_bin_volume   = "${var.cni_plugin_name != "" ? "--volume opt-${var.cni_plugin_name}-bin,kind=host,source=/opt/${var.cni_plugin_name}/bin --volume opt-cni-bin,kind=host,source=/opt/cni/bin" : "" }"
+    cni_bin_mount    = "${var.cni_plugin_name != "" ? "--mount volume=opt-${var.cni_plugin_name}-bin,target=/opt/${var.cni_plugin_name}/bin --mount volume=opt-cni-bin,target=/opt/cni/bin" : "" }"
+    cni_bin_dir      = "${var.cni_plugin_name != "" ? "/opt/${var.cni_plugin_name}/bin" : "" }"
+    cni_override_dir = "${var.cni_plugin_name != "" ? "ExecStartPre=-/bin/ln -s -T /opt/${var.cni_plugin_name} /opt/cni" : "" }"
+  }
+}
+
 data "template_file" "kubelet-worker" {
   template = "${file("${path.module}/resources/worker-kubelet.service")}"
 
   vars {
-    node_label     = "${var.kubelet_node_label}"
-    cloud_provider = "${var.cloud_provider}"
-    cluster_dns    = "${var.tectonic_kube_dns_service_ip}"
+    node_label       = "${var.kubelet_node_label}"
+    cloud_provider   = "${var.cloud_provider}"
+    cluster_dns      = "${var.tectonic_kube_dns_service_ip}"
+    cni_bin_volume   = "${data.null_data_source.kubelet-cni-binaries.outputs.cni_bin_volume}"
+    cni_bin_mount    = "${data.null_data_source.kubelet-cni-binaries.outputs.cni_bin_mount}"
+    cni_bin_dir      = "${data.null_data_source.kubelet-cni-binaries.outputs.cni_bin_dir}"
+    cni_override_dir = "${data.null_data_source.kubelet-cni-binaries.outputs.cni_override_dir}"
   }
 }
 

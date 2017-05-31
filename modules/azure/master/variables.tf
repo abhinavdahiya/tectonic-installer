@@ -92,3 +92,7 @@ variable "tectonic_service_disabled" {
 variable "use_custom_fqdn" {
   default = false
 }
+
+variable "cni_plugin_name" {
+  type = "string"
+}
