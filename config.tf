@@ -328,3 +328,8 @@ variable "tectonic_calico_network_policy" {
   description = "[ALPHA] If set to true, calico network policy support will be deployed"
   default     = false
 }
+
+variable "tectonic_calico_network" {
+  description = "[ALPHA] If set to true, calico network support will be deployed"
+  default     = false
+}

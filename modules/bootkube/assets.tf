@@ -239,3 +239,15 @@ module "calico-network-policy" {
 
   bootkube_dir = "${template_dir.bootkube.id}"
 }
+
+module "calico-network" {
+  source = "./net/calico-network"
+
+  kube_apiserver_url = "${var.kube_apiserver_url}"
+  calico_image       = "${var.container_images["calico"]}"
+  calico_cni_image   = "${var.container_images["calico_cni"]}"
+  cluster_cidr       = "${var.cluster_cidr}"
+  enabled            = "${var.calico_network}"
+
+  bootkube_dir = "${template_dir.bootkube.id}"
+}

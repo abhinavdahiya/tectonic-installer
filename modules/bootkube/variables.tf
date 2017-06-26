@@ -117,3 +117,8 @@ variable "calico_network_policy" {
   description = "Deploy network policy support using Calico"
   default     = false
 }
+
+variable "calico_network" {
+  description = "Deploy network support using Calico"
+  default     = false
+}

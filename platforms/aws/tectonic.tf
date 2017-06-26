@@ -8,7 +8,9 @@ module "bootkube" {
   # Platform-independent variables wiring, do not modify.
   container_images      = "${var.tectonic_container_images}"
   versions              = "${var.tectonic_versions}"
+  flannel_networking    = "${!var.tectonic_calico_network ? true : false}"
   calico_network_policy = "${var.tectonic_calico_network_policy}"
+  calico_network        = "${var.tectonic_calico_network}"
 
   ca_cert    = "${var.tectonic_ca_cert}"
   ca_key     = "${var.tectonic_ca_key}"

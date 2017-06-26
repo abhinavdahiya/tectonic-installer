@@ -32,6 +32,7 @@ output "id" {
     )}
   ${module.flannel.id}
   ${module.calico-network-policy.id}
+  ${module.calico-network.id}
   ")}"
 }
 
