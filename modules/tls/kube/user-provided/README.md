@@ -28,8 +28,8 @@ module "kube_certs" {
   source = "../../modules/tls/kube/user-provided"
 
   ca_cert_pem_path        = "/path/to/ca.crt"
-  kubelet_cert_pem_path   = "/path/to/kubelet.crt"
-  kubelet_key_pem_path    = "/path/to/kubelet.key"
+  admin_cert_pem_path   = "/path/to/kubelet.crt"
+  admin_key_pem_path    = "/path/to/kubelet.key"
   apiserver_cert_pem_path = "/path/to/apiserver.crt"
   apiserver_key_pem_path  = "/path/to/apiserver.key"
 }
