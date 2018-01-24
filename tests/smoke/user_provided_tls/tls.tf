@@ -31,8 +31,9 @@ module "kube_certs" {
   source = "../../modules/tls/kube/user-provided"
 
   ca_cert_pem_path        = "../../tests/smoke/user_provided_tls/certs/kube/ca.crt"
-  kubelet_cert_pem_path   = "../../tests/smoke/user_provided_tls/certs/kube/kubelet.crt"
-  kubelet_key_pem_path    = "../../tests/smoke/user_provided_tls/certs/kube/kubelet.key"
+  ca_key_pem_path         = "../../tests/smoke/user_provided_tls/certs/kube/ca.key"
+  admin_cert_pem_path     = "../../tests/smoke/user_provided_tls/certs/kube/admin.crt"
+  admin_key_pem_path      = "../../tests/smoke/user_provided_tls/certs/kube/admin.key"
   apiserver_cert_pem_path = "../../tests/smoke/user_provided_tls/certs/kube/apiserver.crt"
   apiserver_key_pem_path  = "../../tests/smoke/user_provided_tls/certs/kube/apiserver.key"
 }
