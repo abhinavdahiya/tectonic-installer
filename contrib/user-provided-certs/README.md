@@ -30,6 +30,7 @@ Certificate           | TLS module                           | Variable
 `apiserver.crt`       | `modules/tls/kube/user-provided`     | `apiserver_cert_pem_path`
 `apiserver.key`       | `modules/tls/kube/user-provided`     | `apiserver_key_pem_path`
 `ca.crt`              | `modules/tls/kube/user-provided`     | `ca_cert_pem_path`
+`ca.key`              | `modules/tls/kube/user-provided`     | `ca_key_pem_path`
 `ca.crt`              | `modules/tls/ingress/user-provided`  | `ca_cert_pem_path`
 `etcd-ca.crt`         | `modules/tls/etcd/user-provided`     | `etcd_ca_crt_pem_path`
 `etcd-client.crt`     | `modules/tls/etcd/user-provided`     | `etcd_client_crt_pem_path`
@@ -44,6 +45,6 @@ Certificate           | TLS module                           | Variable
 `identity-server.key` | `modules/tls/identity/user-provided` | `server_key_pem_path`
 `ingress.crt`         | `modules/tls/ingress/user-provided`  | `cert_pem_path`
 `ingress.key`         | `modules/tls/ingress/user-provided`  | `key_pem_path`
-`kubelet.crt`         | `modules/tls/kube/user-provided`     | `kubelet_cert_pem_path`
-`kubelet.key`         | `modules/tls/kube/user-provided`     | `kubelet_key_pem_path`
+`admin.crt`           | `modules/tls/kube/user-provided`     | `admin_cert_pem_path`
+`admin.key`           | `modules/tls/kube/user-provided`     | `admin_key_pem_path`
 
