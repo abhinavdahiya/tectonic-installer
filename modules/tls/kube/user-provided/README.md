@@ -27,11 +27,15 @@ Configure the user provided certificate paths in your platform, i.e. `platforms/
 module "kube_certs" {
   source = "../../modules/tls/kube/user-provided"
 
+  aggregator_ca_cert_pem_path   = "/path/to/aggregator-ca.crt"
   ca_cert_pem_path        = "/path/to/ca.crt"
   admin_cert_pem_path   = "/path/to/kubelet.crt"
   admin_key_pem_path    = "/path/to/kubelet.key"
   apiserver_cert_pem_path = "/path/to/apiserver.crt"
   apiserver_key_pem_path  = "/path/to/apiserver.key"
+  apiserver_proxy_cert_pem_path = "/path/to/apiserver-proxy.crt"
+  apiserver_proxy_key_pem_path  = "/path/to/apiserver-proxy.key"
+
 }
 ```
 
@@ -43,23 +47,23 @@ Certificate:
         X509v3 extensions:
             X509v3 Key Usage: critical
                 Digital Signature, Key Encipherment
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
 ...
 ```
 
 The signed API certificate must have the following Subject Alternative Name (SAN) and Key Usage associations:
 ```
-$ openssl x509 -noout -text -in /path/to/apiserver.crt 
+$ openssl x509 -noout -text -in /path/to/apiserver.crt
 Certificate:
 ...
         X509v3 extensions:
             X509v3 Key Usage: critical
                 Digital Signature, Key Encipherment
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
 ...
-            X509v3 Subject Alternative Name: 
+            X509v3 Subject Alternative Name:
                 DNS:<tectonic_cluster_name>-api.<tectonic_base_domain>,
                 DNS:kubernetes,
                 DNS:kubernetes.default,

@@ -30,10 +30,13 @@ module "ingress_certs" {
 module "kube_certs" {
   source = "../../modules/tls/kube/user-provided"
 
-  ca_cert_pem_path        = "../../tests/smoke/user_provided_tls/certs/kube/ca.crt"
-  ca_key_pem_path         = "../../tests/smoke/user_provided_tls/certs/kube/ca.key"
-  admin_cert_pem_path     = "../../tests/smoke/user_provided_tls/certs/kube/admin.crt"
-  admin_key_pem_path      = "../../tests/smoke/user_provided_tls/certs/kube/admin.key"
-  apiserver_cert_pem_path = "../../tests/smoke/user_provided_tls/certs/kube/apiserver.crt"
-  apiserver_key_pem_path  = "../../tests/smoke/user_provided_tls/certs/kube/apiserver.key"
+  aggregator_ca_cert_pem_path   = "../../tests/smoke/user_provided_tls/certs/kube/aggregator-ca.crt"
+  ca_cert_pem_path              = "../../tests/smoke/user_provided_tls/certs/kube/ca.crt"
+  ca_key_pem_path               = "../../tests/smoke/user_provided_tls/certs/kube/ca.key"
+  admin_cert_pem_path           = "../../tests/smoke/user_provided_tls/certs/kube/admin.crt"
+  admin_key_pem_path            = "../../tests/smoke/user_provided_tls/certs/kube/admin.key"
+  apiserver_cert_pem_path       = "../../tests/smoke/user_provided_tls/certs/kube/apiserver.crt"
+  apiserver_key_pem_path        = "../../tests/smoke/user_provided_tls/certs/kube/apiserver.key"
+  apiserver_proxy_cert_pem_path = "../../tests/smoke/user_provided_tls/certs/kube/apiserver-proxy.crt"
+  apiserver_proxy_key_pem_path  = "../../tests/smoke/user_provided_tls/certs/kube/apiserver-proxy.key"
 }

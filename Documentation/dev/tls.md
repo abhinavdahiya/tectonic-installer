@@ -54,12 +54,14 @@ Terraform module: `modules/tls/kube`
 
 **Control plane → API**
 
-Certificate/Key      | API server parameter            | Description
----------------------|---------------------------------|------------
-`ca_cert_pem`        | `--tls-ca-file`                 | secure access from Admission Controllers
-`apiserver_cert_pem` | `--tls-cert-file`               | https server cert
-`apiserver_key_pem`  | `--tls-private-key-file`        | https server key
-`apiserver_cert_pem` | `--tls-cert-file`               | https server cert
+Certificate/Key            | API server parameter              | Description
+---------------------------| ----------------------------------| ------------
+`ca_cert_pem`              | `--tls-ca-file`                   | secure access from Admission Controllers
+`aggregator_ca_cert_pem`   | `--requestheader-client-ca-file`  | authentication proxy CA certificate
+`apiserver_cert_pem`       | `--tls-cert-file`                 | https server cert
+`apiserver_key_pem`        | `--tls-private-key-file`          | https server key
+`apiserver_proxy_cert_pem` | `--proxy-client-cert-file`        | authentication proxy cert
+`apiserver_proxy_key_pem`  | `--proxy-client-key-file`         | authentication proxy key
 
 **API → Kubelet**
 

@@ -25,10 +25,14 @@ Once configured, execute `terraform apply`. The folder `generated/tls` will cont
 
 The following table gives an overview which generated certificates have to be configured for the corresponding variables for the `user-provided` flavor of TLS modules:
 
+
 Certificate           | TLS module                           | Variable
 ----------------------|--------------------------------------|---------
+`aggregator-ca.crt`   | `modules/tls/kube/user-provided`     | `aggregator_ca_cert_pem_path`
 `apiserver.crt`       | `modules/tls/kube/user-provided`     | `apiserver_cert_pem_path`
 `apiserver.key`       | `modules/tls/kube/user-provided`     | `apiserver_key_pem_path`
+`apiserver-proxy.crt` | `modules/tls/kube/user-provided`     | `apiserver_proxy_cert_pem_path`
+`apiserver-proxy.key` | `modules/tls/kube/user-provided`     | `apiserver_proxy_key_pem_path`
 `ca.crt`              | `modules/tls/kube/user-provided`     | `ca_cert_pem_path`
 `ca.key`              | `modules/tls/kube/user-provided`     | `ca_key_pem_path`
 `ca.crt`              | `modules/tls/ingress/user-provided`  | `ca_cert_pem_path`
