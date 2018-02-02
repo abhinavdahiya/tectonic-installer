@@ -44,11 +44,11 @@ resource "aws_s3_bucket_object" "tectonic_assets" {
   }
 }
 
-# kubeconfig
-resource "aws_s3_bucket_object" "kubeconfig" {
+# kubeconfig-master
+resource "aws_s3_bucket_object" "kubeconfig_master" {
   bucket  = "${aws_s3_bucket.tectonic.bucket}"
-  key     = "kubeconfig"
-  content = "${module.bootkube.kubeconfig-kubelet}"
+  key     = "kubeconfig-master"
+  content = "${module.bootkube.kubeconfig_master}"
   acl     = "private"
 
   # The current Tectonic installer stores bits of the kubeconfig in KMS. As we
@@ -58,7 +58,27 @@ resource "aws_s3_bucket_object" "kubeconfig" {
   server_side_encryption = "AES256"
 
   tags = "${merge(map(
-      "Name", "${var.tectonic_cluster_name}-kubeconfig",
+      "Name", "${var.tectonic_cluster_name}-kubeconfig-master",
+      "KubernetesCluster", "${var.tectonic_cluster_name}",
+      "tectonicClusterID", "${module.tectonic.cluster_id}"
+    ), var.tectonic_aws_extra_tags)}"
+}
+
+# kubeconfig-worker
+resource "aws_s3_bucket_object" "kubeconfig_worker" {
+  bucket  = "${aws_s3_bucket.tectonic.bucket}"
+  key     = "kubeconfig-worker"
+  content = "${module.bootkube.kubeconfig_worker}"
+  acl     = "private"
+
+  # The current Tectonic installer stores bits of the kubeconfig in KMS. As we
+  # do not support KMS yet, we at least offload it to S3 for now. Eventually,
+  # we should consider using KMS-based client-side encryption, or uploading it
+  # to KMS.
+  server_side_encryption = "AES256"
+
+  tags = "${merge(map(
+      "Name", "${var.tectonic_cluster_name}-kubeconfig-worker",
       "KubernetesCluster", "${var.tectonic_cluster_name}",
       "tectonicClusterID", "${module.tectonic.cluster_id}"
     ), var.tectonic_aws_extra_tags)}"

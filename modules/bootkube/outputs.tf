@@ -18,7 +18,8 @@
 output "id" {
   value = "${sha1("
   ${local_file.kubeconfig.id}
-  ${local_file.kubeconfig-kubelet.id}
+  ${local_file.kubeconfig_master.id}
+  ${local_file.kubeconfig_worker.id}
   ${local_file.bootkube_sh.id}
   ${local_file.kco-config_yaml.id}
   ${template_dir.bootkube.id}
@@ -29,8 +30,12 @@ output "kubeconfig" {
   value = "${data.template_file.kubeconfig.rendered}"
 }
 
-output "kubeconfig-kubelet" {
-  value = "${data.template_file.kubeconfig-kubelet.rendered}"
+output "kubeconfig_master" {
+  value = "${data.template_file.kubeconfig_master.rendered}"
+}
+
+output "kubeconfig_worker" {
+  value = "${data.template_file.kubeconfig_worker.rendered}"
 }
 
 output "systemd_service_rendered" {

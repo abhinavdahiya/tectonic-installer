@@ -50,19 +50,42 @@ resource "null_resource" "etcd_secrets" {
   }
 }
 
-resource "null_resource" "kubeconfig" {
-  count      = "${length(var.tectonic_metal_controller_domains) + length(var.tectonic_metal_worker_domains)}"
+resource "null_resource" "kubeconfig_master" {
+  count      = "${length(var.tectonic_metal_controller_domains)}"
   depends_on = ["null_resource.etcd_secrets"]
 
   connection {
     type    = "ssh"
-    host    = "${element(concat(var.tectonic_metal_controller_domains, var.tectonic_metal_worker_domains), count.index)}"
+    host    = "${element(var.tectonic_metal_controller_domains, count.index)}"
     user    = "core"
     timeout = "60m"
   }
 
   provisioner "file" {
-    content     = "${module.bootkube.kubeconfig-kubelet}"
+    content     = "${module.bootkube.kubeconfig_master}"
+    destination = "$HOME/kubeconfig"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mv /home/core/kubeconfig /etc/kubernetes/kubeconfig",
+    ]
+  }
+}
+
+resource "null_resource" "kubeconfig_worker" {
+  count      = "${length(var.tectonic_metal_worker_domains)}"
+  depends_on = ["null_resource.etcd_secrets"]
+
+  connection {
+    type    = "ssh"
+    host    = "${element(var.tectonic_metal_worker_domains, count.index)}"
+    user    = "core"
+    timeout = "60m"
+  }
+
+  provisioner "file" {
+    content     = "${module.bootkube.kubeconfig_worker}"
     destination = "$HOME/kubeconfig"
   }
 
@@ -78,7 +101,7 @@ resource "null_resource" "bootstrap" {
   # Terraform only does one task at a time, so it would try to bootstrap
   # Kubernetes and Tectonic while no Kubelets are running. Ensure all nodes
   # receive a kubeconfig before proceeding with bootkube and tectonic.
-  depends_on = ["null_resource.kubeconfig"]
+  depends_on = ["null_resource.kubeconfig_master", "null_resource.kubeconfig_worker"]
 
   connection {
     type    = "ssh"

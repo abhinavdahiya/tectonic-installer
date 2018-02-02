@@ -228,7 +228,7 @@ EOF
   ign_tectonic_service_id              = "${module.tectonic.systemd_service_id}"
   ign_update_ca_certificates_dropin_id = "${module.ignition_masters.update_ca_certificates_dropin_id}"
   instance_count                       = "${var.tectonic_master_count}"
-  kubeconfig_content                   = "${module.bootkube.kubeconfig-kubelet}"
+  kubeconfig_content                   = "${module.bootkube.kubeconfig_master}"
 }
 
 module "ignition_workers" {
@@ -275,7 +275,7 @@ EOF
   ign_systemd_default_env_id           = "${local.tectonic_http_proxy_enabled ? module.ignition_workers.systemd_default_env_id : ""}"
   ign_update_ca_certificates_dropin_id = "${module.ignition_workers.update_ca_certificates_dropin_id}"
   instance_count                       = "${var.tectonic_worker_count}"
-  kubeconfig_content                   = "${module.bootkube.kubeconfig-kubelet}"
+  kubeconfig_content                   = "${module.bootkube.kubeconfig_worker}"
 }
 
 module "secrets" {

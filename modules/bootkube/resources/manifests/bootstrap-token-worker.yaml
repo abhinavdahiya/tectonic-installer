@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bootstrap-token-${bootstrap_token_id_worker}
+  namespace: kube-system
+type: bootstrap.kubernetes.io/token
+stringData:
+  token-id: ${bootstrap_token_id_worker}
+  token-secret: ${bootstrap_token_secret_worker}
+  usage-bootstrap-authentication: "true"
+  auth-extra-groups: system:bootstrappers:worker
