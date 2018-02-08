@@ -117,6 +117,24 @@ data "ignition_file" "s3_puller" {
   }
 }
 
+data "template_file" "aws_kcfg" {
+  template = "${file("${path.module}/resources/bin/aws-kcfg.sh")}"
+
+  vars {
+    cluster_name = "${var.cluster_name}"
+  }
+}
+
+data "ignition_file" "aws_kcfg" {
+  filesystem = "root"
+  path       = "/opt/aws-kcfg.sh"
+  mode       = 0755
+
+  content {
+    content = "${data.template_file.aws_kcfg.rendered}"
+  }
+}
+
 data "ignition_systemd_unit" "locksmithd" {
   name = "locksmithd.service"
   mask = true

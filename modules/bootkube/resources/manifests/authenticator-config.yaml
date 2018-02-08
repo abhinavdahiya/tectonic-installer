@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authenticator-config
+  namespace: kube-system
+data:
+  aws-authenticator-config.yaml: |
+    ${aws_authenticator_config}

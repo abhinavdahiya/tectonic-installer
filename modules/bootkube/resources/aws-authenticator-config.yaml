@@ -1,0 +1,15 @@
+clusterID: ${cluster_name}
+server:
+  stateDir: /var/aws-authenticator
+  generateKubeconfig: /var/aws-authenticator/kubeconfig.yaml
+  mapRoles:
+  - roleARN: arn:aws:iam::${account_id}:role/${master_node_role}
+    username: aws:{{AccountID}}:instance:{{SessionName}}
+    groups:
+    - system:bootstrappers
+    - system:bootstrappers:master
+  - roleARN: arn:aws:iam::${account_id}:role/${worker_node_role}
+    username: aws:{{AccountID}}:instance:{{SessionName}}
+    groups:
+    - system:bootstrappers
+    - system:bootstrappers:worker

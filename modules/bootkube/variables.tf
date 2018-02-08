@@ -177,3 +177,9 @@ variable "tectonic_networking" {
   description = "configures the network to be used in the cluster"
   type        = "string"
 }
+
+variable "aws_node_account_id" {}
+
+variable "aws_master_node_role" {}
+
+variable "aws_worker_node_role" {}

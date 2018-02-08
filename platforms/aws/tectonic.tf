@@ -51,6 +51,10 @@ module "bootkube" {
   cloud_config_path   = ""
   tectonic_networking = "${var.tectonic_networking}"
   calico_mtu          = "1480"
+
+  aws_node_account_id  = "${data.aws_caller_identity.current.account_id}"
+  aws_master_node_role = "${var.tectonic_aws_master_iam_role_name == "" ? "${var.tectonic_cluster_name}-master-node" : "${var.tectonic_aws_master_iam_role_name}"}"
+  aws_worker_node_role = "${var.tectonic_aws_worker_iam_role_name == "" ? "${var.tectonic_cluster_name}-worker-node" : "${var.tectonic_aws_worker_iam_role_name}"}"
 }
 
 module "tectonic" {

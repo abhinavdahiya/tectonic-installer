@@ -11,6 +11,8 @@ provider "aws" {
 
 data "aws_availability_zones" "azs" {}
 
+data "aws_caller_identity" "current" {}
+
 module "container_linux" {
   source = "../../modules/container_linux"
 
@@ -122,7 +124,7 @@ module "ignition_masters" {
   iscsi_enabled             = "${var.tectonic_iscsi_enabled}"
   kube_ca_cert_pem          = "${module.kube_certs.ca_cert_pem}"
   kube_dns_service_ip       = "${module.bootkube.kube_dns_service_ip}"
-  kubeconfig_fetch_cmd      = "/opt/s3-puller.sh ${aws_s3_bucket_object.kubeconfig.bucket}/${aws_s3_bucket_object.kubeconfig.key} /etc/kubernetes/kubeconfig"
+  kubeconfig_fetch_cmd      = "/opt/aws-kcfg.sh ${aws_s3_bucket_object.kubeconfig.bucket}/${aws_s3_bucket_object.kubeconfig.key} /etc/kubernetes/kubeconfig"
   kubelet_debug_config      = "${var.tectonic_kubelet_debug_config}"
   kubelet_node_label        = "node-role.kubernetes.io/master"
   kubelet_node_taints       = "node-role.kubernetes.io/master=:NoSchedule"
@@ -159,6 +161,7 @@ module "masters" {
   ign_rm_assets_path_unit_id           = "${module.ignition_masters.rm_assets_path_unit_id}"
   ign_rm_assets_service_id             = "${module.ignition_masters.rm_assets_service_id}"
   ign_s3_puller_id                     = "${module.ignition_masters.s3_puller_id}"
+  ign_aws_kcfg_id                      = "${module.ignition_masters.aws_kcfg_id}"
   ign_systemd_default_env_id           = "${local.tectonic_http_proxy_enabled ? module.ignition_masters.systemd_default_env_id : ""}"
   ign_tectonic_path_unit_id            = "${module.tectonic.systemd_path_unit_id}"
   ign_tectonic_service_id              = "${module.tectonic.systemd_service_id}"
@@ -192,7 +195,7 @@ module "ignition_workers" {
   iscsi_enabled           = "${var.tectonic_iscsi_enabled}"
   kube_ca_cert_pem        = "${module.kube_certs.ca_cert_pem}"
   kube_dns_service_ip     = "${module.bootkube.kube_dns_service_ip}"
-  kubeconfig_fetch_cmd    = "/opt/s3-puller.sh ${aws_s3_bucket_object.kubeconfig.bucket}/${aws_s3_bucket_object.kubeconfig.key} /etc/kubernetes/kubeconfig"
+  kubeconfig_fetch_cmd    = "/opt/aws-kcfg.sh ${aws_s3_bucket_object.kubeconfig.bucket}/${aws_s3_bucket_object.kubeconfig.key} /etc/kubernetes/kubeconfig"
   kubelet_debug_config    = "${var.tectonic_kubelet_debug_config}"
   kubelet_node_label      = "node-role.kubernetes.io/node"
   kubelet_node_taints     = ""
@@ -220,6 +223,7 @@ module "workers" {
   ign_max_user_watches_id              = "${module.ignition_workers.max_user_watches_id}"
   ign_profile_env_id                   = "${local.tectonic_http_proxy_enabled ? module.ignition_workers.profile_env_id : ""}"
   ign_s3_puller_id                     = "${module.ignition_workers.s3_puller_id}"
+  ign_aws_kcfg_id                      = "${module.ignition_masters.aws_kcfg_id}"
   ign_systemd_default_env_id           = "${local.tectonic_http_proxy_enabled ? module.ignition_workers.systemd_default_env_id : ""}"
   ign_update_ca_certificates_dropin_id = "${module.ignition_workers.update_ca_certificates_dropin_id}"
   instance_count                       = "${var.tectonic_worker_count}"

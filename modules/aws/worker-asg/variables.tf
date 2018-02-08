@@ -88,6 +88,10 @@ variable "ign_s3_puller_id" {
   type = "string"
 }
 
+variable "ign_aws_kcfg_id" {
+  type = "string"
+}
+
 variable "s3_bucket" {
   type = "string"
 }

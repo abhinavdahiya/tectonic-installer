@@ -32,4 +32,6 @@ rm /var/tmp/tectonic.zip
 # make files in /opt/tectonic available atomically
 mv /var/tmp/tectonic /opt/tectonic
 
+mkdir -p /etc/kubernetes/aws-authenticator
+mv /opt/tectonic/aws-authenticator-config.yaml /etc/kubernetes/aws-authenticator/config.yaml
 exit 0

@@ -50,6 +50,14 @@ output "s3_puller_rendered" {
   value = "${data.template_file.s3_puller.rendered}"
 }
 
+output "aws_kcfg_id" {
+  value = "${data.ignition_file.aws_kcfg.id}"
+}
+
+output "aws_kcfg_rendered" {
+  value = "${data.template_file.aws_kcfg.rendered}"
+}
+
 output "locksmithd_service_id" {
   value = "${data.ignition_systemd_unit.locksmithd.id}"
 }

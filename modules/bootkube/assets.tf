@@ -19,7 +19,8 @@ resource "template_dir" "bootkube" {
   vars {
     tectonic_network_operator_image = "${var.container_images["tectonic_network_operator"]}"
 
-    kco_config = "${indent(4, chomp(data.template_file.kco-config_yaml.rendered))}"
+    kco_config               = "${indent(4, chomp(data.template_file.kco-config_yaml.rendered))}"
+    aws_authenticator_config = "${indent(4, chomp(data.template_file.aws_authenticator_config.rendered))}"
 
     calico_mtu            = "${var.calico_mtu}"
     cloud_provider_config = "${var.cloud_provider_config}"
@@ -69,17 +70,33 @@ data "template_file" "kubeconfig-kubelet" {
   template = "${file("${path.module}/resources/kubeconfig-kubelet")}"
 
   vars {
-    kube_ca_cert                   = "${base64encode(var.kube_ca_cert_pem)}"
-    kubelet_bootstrap_token_id     = "${random_string.kubelet_bootstrap_token_id.result}"
-    kubelet_bootstrap_token_secret = "${random_string.kubelet_bootstrap_token_secret.result}"
-    server                         = "${var.kube_apiserver_url}"
-    cluster_name                   = "${var.cluster_name}"
+    kube_ca_cert = "${base64encode(var.kube_ca_cert_pem)}"
+    user_token   = "${var.cloud_provider == "aws" ? "##USERTOKEN##" : "${random_string.kubelet_bootstrap_token_id.result}.${random_string.kubelet_bootstrap_token_secret.result}" }"
+    server       = "${var.kube_apiserver_url}"
+    cluster_name = "${var.cluster_name}"
   }
 }
 
 resource "local_file" "kubeconfig-kubelet" {
   content  = "${data.template_file.kubeconfig-kubelet.rendered}"
   filename = "./generated/auth/kubeconfig-kubelet"
+}
+
+data "template_file" "aws_authenticator_config" {
+  count    = "${var.cloud_provider == "aws" ? 1 : 0}"
+  template = "${file("${path.module}/resources/aws-authenticator-config.yaml")}"
+
+  vars {
+    cluster_name       = "${var.cluster_name}"
+    account_id       = "${var.aws_node_account_id}"
+    master_node_role = "${var.aws_master_node_role}"
+    worker_node_role = "${var.aws_worker_node_role}"
+  }
+}
+
+resource "local_file" "aws_authenticator_config" {
+  content  = "${data.template_file.aws_authenticator_config.rendered}"
+  filename = "./generated/aws-authenticator-config.yaml"
 }
 
 # kvo-config.yaml (resources/generated/kco-config.yaml)
