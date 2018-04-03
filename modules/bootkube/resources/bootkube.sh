@@ -21,6 +21,7 @@ set -e
 mkdir -p /etc/kubernetes/manifests/
 cp $(pwd)/tnc-bootstrap/tectonic-node-controller-config.yaml /etc/kubernetes/tnc-config
 cp $(pwd)/tnc-bootstrap/tectonic-node-controller-pod.yaml $(pwd)/bootstrap-manifests/
+cp -r $(pwd)/bootstrap-configs /etc/kubernetes/bootstrap-configs
 
 # shellcheck disable=SC2154
 /usr/bin/docker run \
