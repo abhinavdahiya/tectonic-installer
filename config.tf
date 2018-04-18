@@ -84,7 +84,7 @@ variable "tectonic_container_images" {
     kubernetes_addon_operator            = "quay.io/coreos/kube-addon-operator-dev:3e30da0da85e4474c9c082f3db5bb3c75614d6de"
     tectonic_alm_operator                = "quay.io/coreos/tectonic-alm-operator:v0.3.1"
     tectonic_ingress_controller_operator = "quay.io/coreos/tectonic-ingress-controller-operator-dev:352aae451128d064ae22455d800f75132b1af914"
-    tectonic_utility_operator            = "quay.io/coreos/tectonic-utility-operator:7884c5c9b6cf738e3bda2731449c5c2ead54b390"
+    tectonic_utility_operator            = "quay.io/coreos/tectonic-utility-operator:b60256528f0868ef8ec8e42607535f56a1379d76"
     tectonic_network_operator            = "quay.io/coreos/tectonic-network-operator-dev:74862d268d2d4b669c7f9e0c9e7027d1a000e02d"
   }
 }
@@ -94,18 +94,11 @@ variable "tectonic_container_base_images" {
   type        = "map"
 
   default = {
-    tectonic_monitoring_auth = "quay.io/coreos/tectonic-monitoring-auth"
-    config_reload            = "quay.io/coreos/configmap-reload"
-    addon_resizer            = "quay.io/coreos/addon-resizer"
-    kube_state_metrics       = "quay.io/coreos/kube-state-metrics"
-    grafana                  = "quay.io/coreos/monitoring-grafana"
-    grafana_watcher          = "quay.io/coreos/grafana-watcher"
-    prometheus_operator      = "quay.io/coreos/prometheus-operator"
-    prometheus_config_reload = "quay.io/coreos/prometheus-config-reloader"
-    prometheus               = "quay.io/prometheus/prometheus"
-    alertmanager             = "quay.io/prometheus/alertmanager"
-    node_exporter            = "quay.io/prometheus/node-exporter"
-    kube_rbac_proxy          = "quay.io/coreos/kube-rbac-proxy"
+    config_reload      = "quay.io/coreos/configmap-reload"
+    addon_resizer      = "quay.io/coreos/addon-resizer"
+    kube_state_metrics = "quay.io/coreos/kube-state-metrics"
+    node_exporter      = "quay.io/prometheus/node-exporter"
+    kube_rbac_proxy    = "quay.io/coreos/kube-rbac-proxy"
   }
 }
 
@@ -114,10 +107,9 @@ variable "tectonic_versions" {
   type        = "map"
 
   default = {
-    monitoring = "1.9.3"
-    tectonic   = "1.8.4-tectonic.2"
-    cluo       = "0.3.1"
-    alm        = "0.3.1"
+    tectonic = "1.8.4-tectonic.2"
+    cluo     = "0.3.1"
+    alm      = "0.3.1"
   }
 }
 
